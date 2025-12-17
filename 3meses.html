@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Feliz 3 Meses</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    user-select: none;
+    touch-action: none;
+}
+
+body {
+    margin: 0;
+    height: 100svh;
+    background: linear-gradient(180deg, #ff9a9e, #fad0c4);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* TÍTULO */
+h1 {
+    margin: 20px 0 10px;
+    color: white;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* TABLERO */
+#board {
+    width: 90vw;
+    max-width: 360px;
+    aspect-ratio: 1 / 1;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* CONTENEDOR PIEZAS */
+#pieces {
+    width: 100%;
+    height: 35vh;
+    margin-top: 15px;
+    background: rgba(255,255,255,0.35);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+/* PIEZAS VISIBLES */
+.piece {
+    width: 70px;
+    height: 70px;
+    background: #ff5e78;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,.3);
+}
+</style>
+</head>
+
+<body>
+
+<h1>Feliz 3 Meses</h1>
+
+<div id="board"></div>
+
+<div id="pieces"></div>
+
+<script>
+const piecesContainer = document.getElementById("pieces");
+
+let count = 1;
+
+// CREA PIEZAS DE PRUEBA (VISIBLES)
+for (let i = 0; i < 9; i++) {
+    const piece = document.createElement("div");
+    piece.className = "piece";
+    piece.textContent = count++;
+    enableDrag(piece);
+    piecesContainer.appendChild(piece);
+}
+
+function enableDrag(el) {
+    let offsetX, offsetY;
+
+    el.addEventListener("touchstart", e => {
+        const t = e.touches[0];
+        const rect = el.getBoundingClientRect();
+        offsetX = t.clientX - rect.left;
+        offsetY = t.clientY - rect.top;
+        el.style.position = "fixed";
+        el.style.zIndex = 10;
+    });
+
+    el.addEventListener("touchmove", e => {
+        const t = e.touches[0];
+        el.style.left = (t.clientX - offsetX) + "px";
+        el.style.top = (t.clientY - offsetY) + "px";
+    });
+
+    el.addEventListener("touchend", () => {
+        el.style.position = "relative";
+        el.style.left = "";
+        el.style.top = "";
+        el.style.zIndex = "";
+    });
+}
+</script>
+
+</body>
+</html>
